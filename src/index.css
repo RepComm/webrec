@@ -1,0 +1,32 @@
+
+#scene {
+  flex-direction: column;
+}
+
+.pSourceConfig {
+	flex-direction: column;
+	position: absolute;
+	left: 20vw;
+	top: 20vw;
+	width: 60vw;
+	background-color: #151515;
+	text-align: center;
+	padding: 1em;
+}
+
+#left {
+	background-color: #151515;
+}
+#center {
+	flex: 3;
+	background-color: #242424;
+}
+#right {
+	background-color: #151515;
+}
+#video {
+	min-width: 0;
+	min-height: 0;
+	max-width: 100%;
+	max-height: 100%;
+}
