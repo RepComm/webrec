@@ -7,6 +7,7 @@ import {
   Panel,
   Text
 } from "@repcomm/exponent-ts";
+import { Compositor } from "./components/Compositor";
 import { SourcePanel } from "./components/sourcepanel";
 
 EXPONENT_CSS_BODY_STYLES.mount(document.head);
@@ -46,11 +47,15 @@ async function main() {
     .setId("scene")
     .mount(left);
 
-  const video = new Exponent()
-    .make("video")
-    .applyRootClasses()
-    .setId("video")
+  const compositor = new Compositor()
+    .setId("compositor")
     .mount(center);
+
+  // const video = new Exponent()
+  //   .make("video")
+  //   .applyRootClasses()
+  //   .setId("video")
+  //   .mount(center);
 
   const pAddSource = new SourcePanel()
     .mount(container);
@@ -59,24 +64,34 @@ async function main() {
   pAddSource.bDone.on("click", async () => {
     let cfg = pAddSource.getConfig();
     
-    let v = video.element as HTMLVideoElement;
+    // let v = video.element as HTMLVideoElement;
     switch (cfg.type) {
       case "Microphone":
         let streamMic = await getMicrophone(cfg.microphone);
-        v.srcObject = streamMic;
+
+        //TODO - add functionality for compositing the audio with webaudio api
+
+        // v.srcObject = streamMic;
         break;
       case "Display":
         let streamDisplay = await getDisplay(cfg.display);
-        v.srcObject = streamDisplay;
+        compositor.createSource(streamDisplay);
+
+        // v.srcObject = streamDisplay;
         break;
       case "Camera":
         let streamCamera = await getCamera(cfg.camera);
-        v.srcObject = streamCamera;
+
+        compositor.createSource(streamCamera);
+
+        // v.srcObject = streamCamera;
         break;
     }
-    video.on("loadedmetadata", (e) => {
-      v.play();
-    });
+    // video.on("loadedmetadata", (e) => {
+    //   v.play();
+    // });
+    
+    compositor.start();
   });
 
 }
